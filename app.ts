@@ -23,11 +23,19 @@ app.get("/string", async function (req, res) {
     res.status(INVALID_PARAM_ERROR).send("Error: missing username query parameter.");
   } else {
     let db = await getDBConnection();
-    const query = 
-        "select * from strings where id not in (select strid from responses where user like ?) order by random() limit 1;";
-    let respstring = await db.all(query, user);
+    const query =
+        "SELECT * FROM strings WHERE id NOT IN (SELECT strid FROM responses "
+      + "WHERE user LIKE ?) ORDER BY random() LIMIT 1;";
+    let result = await db.all(query, user);
+    if (result.length != 1) {
+      res.json({
+        id: -1,
+        text: "This user has responded to all available strings.",
+      });
+    } else {
+      res.json(result[0]);
+    }
     db.close();
-    res.json(respstring);
   }
 });
 
@@ -44,6 +52,6 @@ app.get("/string", async function (req, res) {
   });
   return db;
 }
-  
+
 const PORT = process.env.PORT || 8000;
 app.listen(PORT);
