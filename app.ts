@@ -11,10 +11,33 @@ import sqlite3 from "sqlite3";
 import {Database, open} from "sqlite";
 
 const INVALID_PARAM_ERROR = 400;
-const SEVER_ERROR = 500;
+const SERVER_ERROR = 500;
 const SERVER_ERROR_MSG = 'Something went wrong on the server.';
 
+const SENT_NAMES = [
+  "sent1",
+  "sent2",
+  "sent3",
+];
+
 app.use(express.static('public'));
+
+async function getString(user:string): Promise<Object> {
+  let db = await getDBConnection();
+  const query =
+      "SELECT * FROM strings WHERE id NOT IN (SELECT strid FROM responses "
+    + "WHERE user LIKE ?) ORDER BY random() LIMIT 1;";
+  let result = await db.all(query, user);
+  if (result.length != 1) {
+    return {
+      id: -1,
+      text: "This user has responded to all available strings.",
+    };
+  } else {
+    return result[0];
+  }
+  db.close();
+}
 
 app.get("/string", async function (req, res) {
   const user = req.query.user;
@@ -22,20 +45,53 @@ app.get("/string", async function (req, res) {
     res.type("text");
     res.status(INVALID_PARAM_ERROR).send("Error: missing username query parameter.");
   } else {
+    try {
+      res.json(await getString(user as string));
+    } catch {
+      res.type("text");
+      res.status(SERVER_ERROR).send(SERVER_ERROR_MSG);
+    }
+  }
+});
+
+function strtobool(s: string): boolean | null {
+  s = s.toLowerCase();
+  if (s === "true") {
+    return true;
+  } else if (s === "false") {
+    return false;
+  } else {
+    return null;
+  }
+}
+
+app.get("/response", async function (req, res) {
+  const sent1 = strtobool(req.query[SENT_NAMES[0]] as string);
+  const sent2 = strtobool(req.query[SENT_NAMES[1]] as string);
+  const sent3 = strtobool(req.query[SENT_NAMES[2]] as string);
+
+  const user = req.query.user;
+  const strid = req.query.strid;
+  if (!user || !sent1 || !sent2 || !sent3 || !strid) {
+    res.type("text");
+    res.status(INVALID_PARAM_ERROR).send("Error: missing query parameters.");
+  } else {
+
     let db = await getDBConnection();
     const query =
-        "SELECT * FROM strings WHERE id NOT IN (SELECT strid FROM responses "
-      + "WHERE user LIKE ?) ORDER BY random() LIMIT 1;";
-    let result = await db.all(query, user);
-    if (result.length != 1) {
-      res.json({
-        id: -1,
-        text: "This user has responded to all available strings.",
-      });
-    } else {
-      res.json(result[0]);
-    }
+      "INSERT INTO responses (user, strid, sent1, sent2, sent3) " +
+      "VALUES (?, ?, ?, ?, ?)";
+    
+    console.log(await db.run(query, user, strid, sent1, sent2, sent3));
     db.close();
+
+    try {
+      res.json(await getString(user as string));
+    } catch {
+      console.warn("get string failed");
+      res.type("text");
+      res.status(SERVER_ERROR).send(SERVER_ERROR_MSG);
+    }
   }
 });
 
