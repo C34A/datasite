@@ -8,7 +8,7 @@ const app = express();
 // const sqlite3 = require('sqlite3');
 // const sqlite = require('sqlite');
 import sqlite3 from "sqlite3";
-import {open} from "sqlite";
+import {Database, open} from "sqlite";
 
 const INVALID_PARAM_ERROR = 400;
 const SEVER_ERROR = 500;
@@ -35,9 +35,9 @@ app.get("/string", async function (req, res) {
  * Establishes a database connection to a database and returns the database object.
  * Any errors that occur during connection should be caught in the function
  * that calls this one.
- * @returns {Object} - The database object for the connection.
+ * @returns {Promise<Database>} - The database object for the connection.
  */
- async function getDBConnection() {
+ async function getDBConnection(): Promise<Database> {
   const db = await open({
     filename: 'data.db',
     driver: sqlite3.Database
