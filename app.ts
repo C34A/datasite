@@ -72,17 +72,31 @@ app.get("/response", async function (req, res) {
 
   const user = req.query.user;
   const strid = req.query.strid;
-  if (!user || !sent1 || !sent2 || !sent3 || !strid) {
+  if (!user || sent1 == null || sent2 == null || sent3 == null || !strid) {
     res.type("text");
     res.status(INVALID_PARAM_ERROR).send("Error: missing query parameters.");
+    console.log("invalid request", {user, strid, sent1, sent2, sent3});
   } else {
 
     let db = await getDBConnection();
-    const query =
-      "INSERT INTO responses (user, strid, sent1, sent2, sent3) " +
-      "VALUES (?, ?, ?, ?, ?)";
+
+    const query = 
+      "SELECT * FROM responses WHERE user LIKE ? AND strid = ?;";
+
+    const existing = await db.all(query, user, strid);
+    if (existing.length > 0) {
+      console.warn("entry exists, overwriting!", existing);
+      const replace =
+        "UPDATE responses SET sent1 = ?, sent2 = ?, sent3 = ?" +
+        " WHERE user LIKE ? AND strid = ?";
+      await db.run(replace, sent1, sent2, sent3, user, strid);
+    } else {
+      const insert =
+        "INSERT INTO responses (user, strid, sent1, sent2, sent3) " +
+        "VALUES (?, ?, ?, ?, ?);";
     
-    console.log(await db.run(query, user, strid, sent1, sent2, sent3));
+      await db.run(insert, user, strid, sent1, sent2, sent3);
+    }
     db.close();
 
     try {
