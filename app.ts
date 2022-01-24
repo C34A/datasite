@@ -109,6 +109,10 @@ app.get("/response", async function (req, res) {
   }
 });
 
+app.get("/download", async function(req, res) {
+    res.download("data.db");
+});
+
 /**
  * Establishes a database connection to a database and returns the database object.
  * Any errors that occur during connection should be caught in the function

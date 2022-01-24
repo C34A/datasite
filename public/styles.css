@@ -4,13 +4,19 @@ body {
     font-family: 'Times New Roman', Times, serif;
 }
 
+
+
 .hidden {
     display: none;
 }
 
-#promptstr {
+#promptstr, #errtext, a {
     text-align: center;
     font-size: 150%;
+}
+
+#errtext {
+    color: red;
 }
 
 .center {
