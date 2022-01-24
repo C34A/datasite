@@ -42,8 +42,8 @@
         currentID = respObj.id;
         setText(respObj.text);
       })
-      .catch(e => {
-        showErr("an error occurred: " + e);
+      .catch(errObj => {
+        showErr("an error occurred: " + errObj);
       });
   }
 
@@ -57,10 +57,10 @@
 
   /**
    * set the prompt text
-   * @param {string} t the text to set
+   * @param {string} text the text to set
    */
-  function setText(t) {
-    id("promptstr").textContent = "" + t;
+  function setText(text) {
+    id("promptstr").textContent = "" + text;
   }
 
   /**
@@ -110,15 +110,6 @@
   }
 
   /*  -------- helper functions --------  */
-
-  /**
-   * querySelector wrapper
-   * @param {String} selector the css selector
-   * @returns {HTMLElement} result
-   */
-  function qs(selector) {
-    return document.querySelector(selector);
-  }
 
   /**
    * document.getElementById wrapper
