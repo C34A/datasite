@@ -110,7 +110,42 @@ app.get("/response", async function (req, res) {
 });
 
 app.get("/download", async function(req, res) {
-    res.download("data.db");
+  let strings: any = {};
+
+  let db = await getDBConnection();
+
+  strings[-1] = "NULL_STRING";
+  (await db.all("select * from strings;")).forEach((el, i) => {
+    const el2: {id: number, string: string} = el;
+    strings[el2.id] = el.text;
+  });
+  type Response = {
+    username: string,
+    str: string,
+    sent1: boolean,
+    sent2: boolean,
+    sent3: boolean,
+  };
+
+  let responses: any = [];
+  
+  (await db.all("select * from responses")).forEach((el, i) => {
+    // console.log(el);
+    responses.push({
+      username: el.user,
+      str: strings[el.strid],
+      sent1: el.sent1,
+      sent2: el.sent2,
+      sent3: el.sent3,
+    } as Response);
+  });
+
+  // console.log(strings);
+  // console.log(responses);
+
+  res.json(responses);
+
+  db.close();
 });
 
 /**

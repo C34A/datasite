@@ -25,8 +25,6 @@
       return;
     }
 
-    currentID = -1;
-    setText("loading...");
     handleStringResponse(fetch(`/string?user=${uname}`));
   }
 
@@ -85,8 +83,19 @@
     let query = `/response?user=${uname}&strid=${currentID}`;
     query += `&sent1=${sent1}&sent2=${sent2}&sent3=${sent3}`;
 
-    setText("loading...");
+    reset();
     handleStringResponse(fetch(query));
+  }
+
+  /**
+   * reset state while loading.
+   */
+  function reset() {
+    currentID = -1;
+    setText("loading...");
+    id("s1-box").checked = false;
+    id("s2-box").checked = false;
+    id("s3-box").checked = false;
   }
 
   /**
