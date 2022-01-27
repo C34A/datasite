@@ -11,22 +11,55 @@
       <label for="username">Enter Username:</label>
       <input id="username">
       <button id="getstr">Get New String</button>
-      <a href="/download">download data (json)</a>
+      <a href="/download">download data (csv)</a>
     </header>
     <p id="promptstr" class="center"> Enter username and click "get new string" to start </p>
     <p id="errtext" class="hidden center">An error occurred.</p>
     <section class="center">
+      <!-- anger fear anticipation trust surprise sadness joy disgust pos neg neutral  -->
       <div>
-        <label for="s1-box">Sentiment 1</label>
+        <label for="s1-box">anger</label>
         <input type="checkbox" id="s1-box">
       </div>
       <div>
-        <label for="s2-box">Sentiment 2</label>
+        <label for="s2-box">fear</label>
         <input type="checkbox" id="s2-box">
       </div>
       <div>
-        <label for="s3-box">Sentiment 3</label>
+        <label for="s3-box">anticipation</label>
         <input type="checkbox" id="s3-box">
+      </div>
+      <div>
+        <label for="s4-box">trust</label>
+        <input type="checkbox" id="s4-box">
+      </div>
+      <div>
+        <label for="s5-box">surprise</label>
+        <input type="checkbox" id="s5-box">
+      </div>
+      <div>
+        <label for="s6-box">sadness</label>
+        <input type="checkbox" id="s6-box">
+      </div>
+      <div>
+        <label for="s7-box">joy</label>
+        <input type="checkbox" id="s7-box">
+      </div>
+      <div>
+        <label for="s8-box">disgust</label>
+        <input type="checkbox" id="s8-box">
+      </div>
+      <div>
+        <label for="pos">positive</label>
+        <input type="radio" id="pos" name="pnn">
+      </div>
+      <div>
+        <label for="neu">neutral</label>
+        <input type="radio" id="neu" name="pnn">
+      </div>
+      <div>
+        <label for="neg">negative</label>
+        <input type="radio" id="neg" name="pnn">
       </div>
       <button id="send">Submit</button>
     </section>

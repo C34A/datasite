@@ -68,6 +68,14 @@
     let sent1 = id("s1-box").checked;
     let sent2 = id("s2-box").checked;
     let sent3 = id("s3-box").checked;
+    let sent4 = id("s4-box").checked;
+    let sent5 = id("s5-box").checked;
+    let sent6 = id("s6-box").checked;
+    let sent7 = id("s7-box").checked;
+    let sent8 = id("s8-box").checked;
+    let sent9 = id("pos").checked;
+    let sent10 = id("neg").checked;
+    let sent11 = id("neu").checked;
 
     let uname = getUsername();
     if (!uname || uname === "") {
@@ -81,7 +89,10 @@
     }
 
     let query = `/response?user=${uname}&strid=${currentID}`;
-    query += `&sent1=${sent1}&sent2=${sent2}&sent3=${sent3}`;
+    query += `&anger=${sent1}&fear=${sent2}&anticipation=${sent3}`;
+    query += `&trust=${sent4}&surprise=${sent5}&sadness=${sent6}`;
+    query += `&joy=${sent7}&disgust=${sent8}&positive=${sent9}`;
+    query += `&negative=${sent10}&neutral=${sent11}`;
 
     reset();
     handleStringResponse(fetch(query));
@@ -96,6 +107,14 @@
     id("s1-box").checked = false;
     id("s2-box").checked = false;
     id("s3-box").checked = false;
+    id("s4-box").checked = false;
+    id("s5-box").checked = false;
+    id("s6-box").checked = false;
+    id("s7-box").checked = false;
+    id("s8-box").checked = false;
+    id("pos").checked = false;
+    id("neg").checked = false;
+    id("neu").checked = true;
   }
 
   /**
