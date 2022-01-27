@@ -76,6 +76,7 @@
     let sent9 = id("pos").checked;
     let sent10 = id("neg").checked;
     let sent11 = id("neu").checked;
+    let bad = id("bad").checked;
 
     let uname = getUsername();
     if (!uname || uname === "") {
@@ -92,9 +93,11 @@
     query += `&anger=${sent1}&fear=${sent2}&anticipation=${sent3}`;
     query += `&trust=${sent4}&surprise=${sent5}&sadness=${sent6}`;
     query += `&joy=${sent7}&disgust=${sent8}&positive=${sent9}`;
-    query += `&negative=${sent10}&neutral=${sent11}`;
+    query += `&negative=${sent10}&neutral=${sent11}&bad=${bad}`;
 
     reset();
+
+    // console.log("fetching ", query);
     handleStringResponse(fetch(query));
   }
 
@@ -115,6 +118,7 @@
     id("pos").checked = false;
     id("neg").checked = false;
     id("neu").checked = true;
+    id("bad").checked = false;
   }
 
   /**

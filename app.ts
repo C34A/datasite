@@ -29,6 +29,7 @@ const SENT_NAMES = [
   "positive",
   "negative",
   "neutral",
+  "bad",
 ];
 
 app.use(express.static('public'));
@@ -88,13 +89,14 @@ app.get("/response", async function (req, res) {
   const sent9 = strtobool(req.query[SENT_NAMES[8]] as string);
   const sent10 = strtobool(req.query[SENT_NAMES[9]] as string);
   const sent11 = strtobool(req.query[SENT_NAMES[10]] as string);
+  const bad = strtobool(req.query[SENT_NAMES[11]] as string);
 
   const user = req.query.user;
   const strid = req.query.strid;
   if (!user || sent1 == null || sent2 == null || sent3 == null 
       || sent4 == null  || sent5 == null  || sent6 == null
       || sent7 == null  || sent8 == null  || sent9 == null
-      || sent10 == null || sent11 == null || !strid) {
+      || sent10 == null || sent11 == null || bad == null || !strid) {
     res.type("text");
     res.status(INVALID_PARAM_ERROR).send("Error: missing query parameters.");
     console.log("invalid request", {user, strid, sent1, sent2, sent3, sent4, sent5, sent6, sent7, sent8, sent9, sent10, sent11});
@@ -111,7 +113,7 @@ app.get("/response", async function (req, res) {
       const replace =
         "UPDATE responses SET anger = ?, fear = ?, anticipation = ?" +
         ", trust = ?, surprise = ?, sadness = ?, joy = ?, disgust = ?" +
-        ", positive = ?, neutral = ?, negative = ?" +
+        ", pos = ?, neu = ?, negative = ?, bad = ?" +
         " WHERE user LIKE ? AND strid = ?";
       await db.run(
         replace,
@@ -126,16 +128,17 @@ app.get("/response", async function (req, res) {
         sent9,
         sent10,
         sent11,
+        bad,
         user,
         strid
         );
     } else {
       const insert =
         "INSERT INTO responses (user, strid, anger, fear, anticipation, " +
-        "trust, surprise, sadness, joy, disgust, positive, negative, neutral) " +
-        "VALUES (?, ?, ?, ?, ?);";
+        "trust, surprise, sadness, joy, disgust, pos, neg, neutral, bad) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     
-      await db.run(insert, user, strid, sent1, sent2, sent3, sent4, sent5, sent6, sent7, sent8, sent9, sent10, sent11);
+      await db.run(insert, user, strid, sent1, sent2, sent3, sent4, sent5, sent6, sent7, sent8, sent9, sent10, sent11, bad);
     }
     db.close();
 
@@ -173,6 +176,7 @@ app.get("/download", async function(req, res) {
     positive: boolean,
     negative: boolean,
     neutral: boolean,
+    bad: boolean,
   };
 
   let responses: any = [];
@@ -190,9 +194,10 @@ app.get("/download", async function(req, res) {
       sadness: el.sadness,
       joy: el.joy,
       disgust: el.disgust,
-      positive: el.positive,
-      negative: el.negative,
+      positive: el.pos,
+      negative: el.neg,
       neutral: el.neutral,
+      bad: el.bad,
     } as Response);
   });
 
@@ -215,7 +220,7 @@ app.get("/download", async function(req, res) {
  * @param {[Object]} objArray the data
  */
 function toCSV(objArray: [any]): string {
-  let str = "user,string,anger,fear,anticipation,trust,surprise,sadness,joy,disgust,positive,negative,neutral\r\n";
+  let str = "user,string,anger,fear,anticipation,trust,surprise,sadness,joy,disgust,positive,negative,neutral,bad_data\r\n";
 
   for (let i = 0; i < objArray.length; i++) {
     let line = "";
