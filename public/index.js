@@ -65,17 +65,16 @@
    * try to submit data to the api
    */
   function attemptSubmit() {
-    let sent1 = id("s1-box").checked;
-    let sent2 = id("s2-box").checked;
-    let sent3 = id("s3-box").checked;
-    let sent4 = id("s4-box").checked;
-    let sent5 = id("s5-box").checked;
-    let sent6 = id("s6-box").checked;
-    let sent7 = id("s7-box").checked;
-    let sent8 = id("s8-box").checked;
-    let sent9 = id("pos").checked;
-    let sent10 = id("neg").checked;
-    let sent11 = id("neu").checked;
+    let anger = id("s1-box").checked;
+    let fear = id("s2-box").checked;
+    let surprise = id("s5-box").checked;
+    let sadness = id("s6-box").checked;
+    let joy = id("s7-box").checked;
+    let disgust = id("s8-box").checked;
+    let positive = id("pos").checked;
+    let negative = id("neg").checked;
+    let neutral = id("neu").checked;
+    let ambiguous = id("amb").checked;
     let bad = id("bad").checked;
 
     let uname = getUsername();
@@ -90,10 +89,10 @@
     }
 
     let query = `/response?user=${uname}&strid=${currentID}`;
-    query += `&anger=${sent1}&fear=${sent2}&anticipation=${sent3}`;
-    query += `&trust=${sent4}&surprise=${sent5}&sadness=${sent6}`;
-    query += `&joy=${sent7}&disgust=${sent8}&positive=${sent9}`;
-    query += `&negative=${sent10}&neutral=${sent11}&bad=${bad}`;
+    query += `&anger=${anger}&fear=${fear}`;
+    query += `&surprise=${surprise}&sadness=${sadness}`;
+    query += `&joy=${joy}&disgust=${disgust}&positive=${positive}`;
+    query += `&negative=${negative}&neutral=${neutral}&ambiguous=${ambiguous}&bad=${bad}`;
 
     reset();
 
@@ -109,8 +108,7 @@
     setText("loading...");
     id("s1-box").checked = false;
     id("s2-box").checked = false;
-    id("s3-box").checked = false;
-    id("s4-box").checked = false;
+
     id("s5-box").checked = false;
     id("s6-box").checked = false;
     id("s7-box").checked = false;
@@ -118,6 +116,7 @@
     id("pos").checked = false;
     id("neg").checked = false;
     id("neu").checked = true;
+    id("amb").checked = false;
     id("bad").checked = false;
   }
 

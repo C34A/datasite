@@ -20,8 +20,6 @@ const SERVER_ERROR_MSG = 'Something went wrong on the server.';
 const SENT_NAMES = [
   "anger",
   "fear",
-  "anticipation",
-  "trust",
   "surprise",
   "sadness",
   "joy",
@@ -29,6 +27,7 @@ const SENT_NAMES = [
   "positive",
   "negative",
   "neutral",
+  "ambiguous",
   "bad",
 ];
 
@@ -41,14 +40,15 @@ async function getString(user:string): Promise<Object> {
     + "WHERE user LIKE ?) ORDER BY random() LIMIT 1;";
   let result = await db.all(query, user);
   if (result.length != 1) {
+    db.close();
     return {
       id: -1,
       text: "This user has responded to all available strings.",
     };
   } else {
+    db.close();
     return result[0];
   }
-  db.close();
 }
 
 app.get("/string", async function (req, res) {
@@ -78,28 +78,27 @@ function strtobool(s: string): boolean | null {
 }
 
 app.get("/response", async function (req, res) {
-  const sent1 = strtobool(req.query[SENT_NAMES[0]] as string);
-  const sent2 = strtobool(req.query[SENT_NAMES[1]] as string);
-  const sent3 = strtobool(req.query[SENT_NAMES[2]] as string);
-  const sent4 = strtobool(req.query[SENT_NAMES[3]] as string);
-  const sent5 = strtobool(req.query[SENT_NAMES[4]] as string);
-  const sent6 = strtobool(req.query[SENT_NAMES[5]] as string);
-  const sent7 = strtobool(req.query[SENT_NAMES[6]] as string);
-  const sent8 = strtobool(req.query[SENT_NAMES[7]] as string);
-  const sent9 = strtobool(req.query[SENT_NAMES[8]] as string);
-  const sent10 = strtobool(req.query[SENT_NAMES[9]] as string);
-  const sent11 = strtobool(req.query[SENT_NAMES[10]] as string);
-  const bad = strtobool(req.query[SENT_NAMES[11]] as string);
+  const anger = strtobool(req.query[SENT_NAMES[0]] as string);
+  const fear = strtobool(req.query[SENT_NAMES[1]] as string);
+  const surprise = strtobool(req.query[SENT_NAMES[2]] as string);
+  const sadness = strtobool(req.query[SENT_NAMES[3]] as string);
+  const joy = strtobool(req.query[SENT_NAMES[4]] as string);
+  const disgust = strtobool(req.query[SENT_NAMES[5]] as string);
+  const positive = strtobool(req.query[SENT_NAMES[6]] as string);
+  const negative = strtobool(req.query[SENT_NAMES[7]] as string);
+  const neutral = strtobool(req.query[SENT_NAMES[8]] as string);
+  const ambiguous = strtobool(req.query[SENT_NAMES[9]] as string);
+  const bad = strtobool(req.query[SENT_NAMES[10]] as string);
 
   const user = req.query.user;
   const strid = req.query.strid;
-  if (!user || sent1 == null || sent2 == null || sent3 == null 
-      || sent4 == null  || sent5 == null  || sent6 == null
-      || sent7 == null  || sent8 == null  || sent9 == null
-      || sent10 == null || sent11 == null || bad == null || !strid) {
+  if (!user || anger == null || fear == null || surprise == null 
+      || sadness == null  || joy == null  || disgust == null
+      || positive == null  || negative == null  || neutral == null
+      || ambiguous == null || bad == null || !strid) {
     res.type("text");
     res.status(INVALID_PARAM_ERROR).send("Error: missing query parameters.");
-    console.log("invalid request", {user, strid, sent1, sent2, sent3, sent4, sent5, sent6, sent7, sent8, sent9, sent10, sent11});
+    console.log("invalid request", {user, strid, anger, fear, surprise, sadness, joy, disgust, positive, negative, neutral, ambiguous, bad});
   } else {
 
     let db = await getDBConnection();
@@ -111,34 +110,33 @@ app.get("/response", async function (req, res) {
     if (existing.length > 0) {
       console.warn("entry exists, overwriting!", existing);
       const replace =
-        "UPDATE responses SET anger = ?, fear = ?, anticipation = ?" +
-        ", trust = ?, surprise = ?, sadness = ?, joy = ?, disgust = ?" +
-        ", pos = ?, neu = ?, negative = ?, bad = ?" +
+        "UPDATE responses SET anger = ?, fear = ?, " +
+        "surprise = ?, sadness = ?, joy = ?, disgust = ?" +
+        ", pos = ?, neu = ?, negative = ?, ambiguous = ?, bad = ?" +
         " WHERE user LIKE ? AND strid = ?";
       await db.run(
         replace,
-        sent1,
-        sent2,
-        sent3,
-        sent4,
-        sent5,
-        sent6,
-        sent7,
-        sent8,
-        sent9,
-        sent10,
-        sent11,
+        anger,
+        fear,
+        surprise,
+        sadness,
+        joy,
+        disgust,
+        positive,
+        neutral,
+        negative,
+        ambiguous,
         bad,
         user,
         strid
         );
     } else {
       const insert =
-        "INSERT INTO responses (user, strid, anger, fear, anticipation, " +
-        "trust, surprise, sadness, joy, disgust, pos, neg, neutral, bad) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        "INSERT INTO responses (user, strid, anger, fear, " +
+        "surprise, sadness, joy, disgust, pos, neg, neutral, ambiguous, bad) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     
-      await db.run(insert, user, strid, sent1, sent2, sent3, sent4, sent5, sent6, sent7, sent8, sent9, sent10, sent11, bad);
+      await db.run(insert, user, strid, anger, fear, surprise, sadness, joy, disgust, positive, negative, neutral, ambiguous, bad);
     }
     db.close();
 
@@ -167,8 +165,6 @@ app.get("/download", async function(req, res) {
     str: string,
     anger: boolean,
     fear: boolean,
-    anticipation: boolean,
-    trust: boolean,
     surprise: boolean,
     sadness: boolean,
     joy: boolean,
@@ -176,6 +172,7 @@ app.get("/download", async function(req, res) {
     positive: boolean,
     negative: boolean,
     neutral: boolean,
+    ambiguous: boolean,
     bad: boolean,
   };
 
@@ -188,8 +185,6 @@ app.get("/download", async function(req, res) {
       str: strings[el.strid],
       anger: el.anger,
       fear: el.fear,
-      anticipation: el.anticipation,
-      trust: el.trust,
       surprise: el.surprise,
       sadness: el.sadness,
       joy: el.joy,
@@ -197,6 +192,7 @@ app.get("/download", async function(req, res) {
       positive: el.pos,
       negative: el.neg,
       neutral: el.neutral,
+      ambiguous: el.ambiguous,
       bad: el.bad,
     } as Response);
   });
@@ -220,7 +216,7 @@ app.get("/download", async function(req, res) {
  * @param {[Object]} objArray the data
  */
 function toCSV(objArray: [any]): string {
-  let str = "user,string,anger,fear,anticipation,trust,surprise,sadness,joy,disgust,positive,negative,neutral,bad_data\r\n";
+  let str = "user,string,anger,fear,surprise,sadness,joy,disgust,positive,negative,neutral,ambiguous,bad_data\r\n";
 
   for (let i = 0; i < objArray.length; i++) {
     let line = "";

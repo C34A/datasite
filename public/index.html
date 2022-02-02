@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" href="styles.css"/>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles.css">
     <script src="/index.js"></script>
     <title>266 nlp tagging</title>
   </head>
@@ -16,7 +16,7 @@
     <p id="promptstr" class="center"> Enter username and click "get new string" to start </p>
     <p id="errtext" class="hidden center">An error occurred.</p>
     <section class="center">
-      <!-- anger fear anticipation trust surprise sadness joy disgust pos neg neutral  -->
+      <!-- anger fear surprise sadness joy disgust pos neg neutral ambiguous -->
       <div>
         <label for="s1-box">anger</label>
         <input type="checkbox" id="s1-box">
@@ -25,14 +25,14 @@
         <label for="s2-box">fear</label>
         <input type="checkbox" id="s2-box">
       </div>
-      <div>
+      <!-- <div>
         <label for="s3-box">anticipation</label>
         <input type="checkbox" id="s3-box">
       </div>
       <div>
         <label for="s4-box">trust</label>
         <input type="checkbox" id="s4-box">
-      </div>
+      </div> -->
       <div>
         <label for="s5-box">surprise</label>
         <input type="checkbox" id="s5-box">
@@ -64,6 +64,10 @@
       <div>
         <label for="neg">negative</label>
         <input type="radio" id="neg" name="pnn">
+      </div>
+      <div>
+        <label for="amb">ambiguous</label>
+        <input type="radio" id="amb" name="pnn">
       </div>
       <button id="send">Submit</button>
     </section>
