@@ -14,8 +14,14 @@ con = sqlite3.connect('data.db')
 cur = con.cursor()
 
 for line in lines:
+    line = line.replace('"', '""')
+    # line = line.replace("'", "''")
     query = f'insert into strings (text) values ("{line}");'
-    cur.execute(query)
+    try:
+        cur.execute(query)
+    except Exception as e:
+        print("failed query (", e, "):", query)
+        exit({"this is atest": 1})
 
 con.commit()
 con.close()
