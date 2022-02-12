@@ -24,6 +24,11 @@ body {
     margin-right: auto
 }
 
+.column {
+    margin-left: auto;
+    margin-right: auto;
+    flex-direction: column;
+}
 section {
     display: flex;
     flex-flow: wrap;
