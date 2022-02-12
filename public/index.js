@@ -58,7 +58,8 @@
    * @param {string} text the text to set
    */
   function setText(text) {
-    id("promptstr").textContent = "" + text;
+    // apparently "--" isn't "--"? idk what is going on here
+    id("promptstr").innerHTML = "" + text.replace("--", "<br>").replace("--", "<br>");
   }
 
   /**

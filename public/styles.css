@@ -1,10 +1,9 @@
 body {
-    background-color: #d6ceac;
-    color: #332b28;
+    /* background-color: #d6ceac; */
+    background-color: #e4e4e4;
+    color: #363636;
     font-family: 'Times New Roman', Times, serif;
 }
-
-
 
 .hidden {
     display: none;
@@ -25,10 +24,14 @@ body {
 }
 
 .column {
-    margin-left: auto;
-    margin-right: auto;
+    /* margin-left: ; */
+    /* margin-right: auto; */
+    margin: 5px;
     flex-direction: column;
+    align-items: flex-start;
+    border-radius: 20px;
 }
+
 section {
     display: flex;
     flex-flow: wrap;
@@ -40,7 +43,8 @@ header {
     display: flex;
     flex-flow: wrap;
     justify-content: center;
-    background-color: lightgoldenrodyellow;
+    background-color: rgb(255, 255, 255);
+    border: 1px dashed grey;
     padding: 1em;
     border-radius: 1em;
     align-items: center;
@@ -49,11 +53,12 @@ header {
 header::after {
     display: block;
     content: "";
-    background-color:#332b28;
+    background-color:#505050;
     height: .25em;
     width: 100%;
     margin-top: .25em;
-    transform: translateY(10px);
+    transform: translateY(5px);
+    border-radius: 3px;
 }
 
 header label {
@@ -68,6 +73,29 @@ div {
     border: 2px solid #332b28;
     margin: .5em;
     padding: .25em;
+    font-size: 130%;
+}
+
+#positive, #positive2 {
+    background-color: rgba(197, 248, 207, 0.5);
+    border: 2px solid rgba(30, 100, 44, 0.9);
+}
+
+#negative, #negative2 {
+    background-color: rgba(197, 219, 248, 0.5);
+    border: 2px solid rgba(30, 84, 100, 0.9);
+}
+
+#amb {
+    background-color: rgba(247, 248, 197, 0.5);
+    border: 2px solid rgba(95, 100, 30, 0.9);
+}
+
+#exclude {
+    background-color: rgba(248, 197, 197, 0.5);
+    border: 2px solid rgba(100, 30, 30, 0.9);
+    border-radius: 20px;
+    margin: 5px;
 }
 
 button {

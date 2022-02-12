@@ -14,9 +14,11 @@ con = sqlite3.connect('data.db')
 cur = con.cursor()
 
 for line in lines:
+    # print(type(line))
+    id = int(line.split("id:")[1][:-1].strip())
     line = line.replace('"', '""')
     # line = line.replace("'", "''")
-    query = f'insert into strings (text) values ("{line}");'
+    query = f'insert into strings (text, orig_id) values ("{line}", {id});'
     try:
         cur.execute(query)
     except Exception as e:

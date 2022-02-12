@@ -46,7 +46,7 @@ const SENT_NAMES = [
 'sadness',
 'surprise',
 'neutral',
-'bad string'
+'bad_string'
 ];
 
 app.use(express.static('public'));
@@ -231,11 +231,12 @@ app.get("/download", async function(req, res) {
   strings[-1] = "NULL_STRING";
   (await db.all("select * from strings;")).forEach((el, i) => {
     const el2: {id: number, string: string} = el;
-    strings[el2.id] = el.text;
+    strings[el2.id] = {text: el.text, orig_id: el.orig_id};
   });
   type Response = {
     username: string,
     str: string,
+    orig_str_id: number,
     admiration: boolean,
     amusement: boolean,
     anger: boolean,
@@ -273,7 +274,8 @@ app.get("/download", async function(req, res) {
     // console.log(el);
     responses.push({
       username: el.user,
-      str: strings[el.strid],
+      str: strings[el.strid].text,
+      orig_str_id: strings[el.strid].orig_id,
       admiration: el.admiration,
       amusement: el.amusement,
       anger: el.anger,
@@ -325,7 +327,7 @@ app.get("/download", async function(req, res) {
  * @param {[Object]} objArray the data
  */
 function toCSV(objArray: [any]): string {
-  let str = "user,string,admiration, amusement, anger, annoyance, approval, caring, confusion, curiosity, desire, disappointment, disapproval, disgust, embarrassment, excitement, fear, gratitude, grief, joy, love, nervousness, optimism, pride, realization, relief,remorse, sadness, surprise, neutral, bad_string\r\n";
+  let str = "user,string,id,admiration, amusement, anger, annoyance, approval, caring, confusion, curiosity, desire, disappointment, disapproval, disgust, embarrassment, excitement, fear, gratitude, grief, joy, love, nervousness, optimism, pride, realization, relief,remorse, sadness, surprise, neutral, bad_string\r\n";
 
   for (let i = 0; i < objArray.length; i++) {
     let line = "";
