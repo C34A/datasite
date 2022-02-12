@@ -13,8 +13,7 @@
   "dependencies": {
     "express": "^4.17.2",
     "sqlite": "^4.0.23",
-    "sqlite3": "^5.0.2",
-    "yarn": "^1.22.17"
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",

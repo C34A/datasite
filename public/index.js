@@ -1,5 +1,5 @@
 "use strict";
-
+/* eslint-disable max-lines-per-function */
 (() => {
 
   let currentID = null;
@@ -65,35 +65,35 @@
    * try to submit data to the api
    */
   function attemptSubmit() {
-      let admiration=id("s1-box").checked;
-      let amusement=id("s2-box").checked;
-      let approval=id("s5-box").checked;
-      let caring=id("s6-box").checked;
-      let desire=id("s9-box").checked;
-      let excitement=id("s14-box").checked;
-      let gratitude=id("s16-box").checked;
-      let joy=id("s18-box").checked;
-      let love=id("s19-box").checked;
-      let optimism=id("s21-box").checked;
-      let pride=id("s22-box").checked;
-      let relief=id("s24-box").checked;
-      let anger=id("s3-box").checked;
-      let annoyance=id("s4-box").checked;
-      let disappointment=id("s10-box").checked;
-      let disapproval=id("s11-box").checked;
-      let disgust=id("s12-box").checked;
-      let embarrassment=id("s13-box").checked;
-      let fear=id("s15-box").checked;
-      let grief=id("s17-box").checked;
-      let nervousness=id("s20-box").checked;
-      let remorse=id("s25-box").checked;
-      let sadness=id("s26-box").checked;
-      let confusion=id("s7-box").checked;
-      let curiosity=id("s8-box").checked;
-      let realization=id("s23-box").checked;
-      let surprise=id("s27-box").checked;
-      let neutral=id("s28-box").checked;
-      let bad = id("bad").checked;
+    let admiration = id("s1-box").checked;
+    let amusement = id("s2-box").checked;
+    let approval = id("s5-box").checked;
+    let caring = id("s6-box").checked;
+    let desire = id("s9-box").checked;
+    let excitement = id("s14-box").checked;
+    let gratitude = id("s16-box").checked;
+    let joy = id("s18-box").checked;
+    let love = id("s19-box").checked;
+    let optimism = id("s21-box").checked;
+    let pride = id("s22-box").checked;
+    let relief = id("s24-box").checked;
+    let anger = id("s3-box").checked;
+    let annoyance = id("s4-box").checked;
+    let disappointment = id("s10-box").checked;
+    let disapproval = id("s11-box").checked;
+    let disgust = id("s12-box").checked;
+    let embarrassment = id("s13-box").checked;
+    let fear = id("s15-box").checked;
+    let grief = id("s17-box").checked;
+    let nervousness = id("s20-box").checked;
+    let remorse = id("s25-box").checked;
+    let sadness = id("s26-box").checked;
+    let confusion = id("s7-box").checked;
+    let curiosity = id("s8-box").checked;
+    let realization = id("s23-box").checked;
+    let surprise = id("s27-box").checked;
+    let neutral = id("s28-box").checked;
+    let bad = id("bad").checked;
 
     let uname = getUsername();
     if (!uname || uname === "") {
@@ -106,17 +106,20 @@
       return;
     }
 
-      let query = `/response?user=${uname}&strid=${currentID}`;
-      query += `&admiration=${admiration}&amusement=${amusement}&anger=${anger}`;
-      query += `&annoyance=${annoyance}&approval=${approval}&caring=${caring}`;
-      query += `&confusion=${confusion}&curiosity=${curiosity}&desire=${desire}`;
-      query += `&disappointment=${disappointment}&disapproval=${disapproval}`;
-      query += `&disgust=${disgust}&embarrassment=${embarrassment}`;
-      query += `&excitement=${excitement}&fear=${fear}&gratitude=${gratitude}`;
-      query += `&grief=${grief}&joy=${joy}&love=${love}&nervousness=${nervousness}`;
-      query += `&optimism=${optimism}&pride=${pride}&realization=${realization}`;
-      query += `&relief=${relief}&remorse=${remorse}&sadness=${sadness}`;
-      query += `&surprise=${surprise}&neutral=${neutral}&bad_string=${bad}`;
+    let query = `/response?user=${uname}&strid=${currentID}`;
+    query += `&admiration=${admiration}&amusement=${amusement}&anger=${anger}`;
+    query += `&annoyance=${annoyance}&approval=${approval}&caring=${caring}`;
+    query += `&confusion=${confusion}&curiosity=${curiosity}&desire=${desire}`;
+    query += `&disappointment=${disappointment}&disapproval=${disapproval}`;
+    query += `&disgust=${disgust}&embarrassment=${embarrassment}`;
+    query += `&excitement=${excitement}&fear=${fear}&gratitude=${gratitude}`;
+    query += `&grief=${grief}&joy=${joy}&love=${love}&nervousness=${nervousness}`;
+    query += `&optimism=${optimism}&pride=${pride}&realization=${realization}`;
+    query += `&relief=${relief}&remorse=${remorse}&sadness=${sadness}`;
+    query += `&surprise=${surprise}&neutral=${neutral}&bad_string=${bad}`;
+
+    reset();
+
     handleStringResponse(fetch(query));
   }
 
@@ -127,35 +130,35 @@
     currentID = -1;
     setText("loading...");
 
-      id("s1-box").checked = false;
-      id("s2-box").checked = false;
-      id("s5-box").checked = false;
-      id("s6-box").checked = false;
-      id("s9-box").checked = false;
-      id("s14-box").checked = false;
-      id("s16-box").checked = false;
-      id("s18-box").checked = false;
-      id("s19-box").checked = false;
-      id("s21-box").checked = false;
-      id("s22-box").checked = false;
-      id("s24-box").checked = false;
-      id("s3-box").checked = false;
-      id("s4-box").checked = false;
-      id("s10-box").checked = false;
-      id("s11-box").checked = false;
-      id("s12-box").checked = false;
-      id("s13-box").checked = false;
-      id("s15-box").checked = false;
-      id("s17-box").checked = false;
-      id("s20-box").checked = false;
-      id("s25-box").checked = false;
-      id("s26-box").checked = false;
-      id("s7-box").checked = false;
-      id("s8-box").checked = false;
-      id("s23-box").checked = false;
-      id("s27-box").checked = false;
-      id("s28-box").checked = false;
-      id("bad").checked = false;
+    id("s1-box").checked = false;
+    id("s2-box").checked = false;
+    id("s5-box").checked = false;
+    id("s6-box").checked = false;
+    id("s9-box").checked = false;
+    id("s14-box").checked = false;
+    id("s16-box").checked = false;
+    id("s18-box").checked = false;
+    id("s19-box").checked = false;
+    id("s21-box").checked = false;
+    id("s22-box").checked = false;
+    id("s24-box").checked = false;
+    id("s3-box").checked = false;
+    id("s4-box").checked = false;
+    id("s10-box").checked = false;
+    id("s11-box").checked = false;
+    id("s12-box").checked = false;
+    id("s13-box").checked = false;
+    id("s15-box").checked = false;
+    id("s17-box").checked = false;
+    id("s20-box").checked = false;
+    id("s25-box").checked = false;
+    id("s26-box").checked = false;
+    id("s7-box").checked = false;
+    id("s8-box").checked = false;
+    id("s23-box").checked = false;
+    id("s27-box").checked = false;
+    id("s28-box").checked = false;
+    id("bad").checked = false;
   }
 
   /**
